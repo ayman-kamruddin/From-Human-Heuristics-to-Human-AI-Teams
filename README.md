@@ -7,7 +7,7 @@ This project explores multi-player multi-target environments with and dynamic po
 ## Folder Structure
 
 ### 1. `Experiment-HumanAA`
-Includes experiments involving human-AA interaction:
+Includes executables for experiments involving human-AA interaction:
 - **`Heuristic`**: Heuristic-based models.
 - **`Model1HumanSensitivePlay`**: Pretrained RL model interacting in a human-sensitive mode.
 - **`Model1SelfPlay`**: Pretrained RL model trained in self-play mode.
