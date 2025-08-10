@@ -43,4 +43,7 @@ Contains utility scripts for processing data and generating figures:
   - `matplotlib`
   - `pandas`
   - `similaritymeasures`
-  - 
+
+## Referrence
+
+bin Kamruddin, A., Lam, C., Ghanem, S., Patil, G., Musolesi, M., di Bernardo, M., & Richardson, M. J. (n.d.). From human heuristics to human–AI teams: Modeling multiagent first-person herding using dynamical perceptual–motor primitives [Manuscript submitted for publication].
