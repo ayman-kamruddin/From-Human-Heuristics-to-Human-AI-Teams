@@ -18,11 +18,11 @@ num_trials = last_trial - first_trial
 def main():
     cwd = os.path.dirname(__file__) # current working directory
     wd = Path(cwd).parents[0] # project working directory
-    humanDataDir = os.path.join(wd,'OtherResults\TS_Dynamic_Policy_JEP\Human') # directory containing human-human TSp data
+    humanDataDir = os.path.join(wd,'OtherResults\TS_Dynamic_Policy\Human') # directory containing human-human TSp data
     human_human_sessions = os.listdir(humanDataDir)
     num_humanhumanSessions = len(human_human_sessions)
     
-    AA_types = ["\Heuristic", "\Human-Sensitive", "\SelfPlay"]
+    AA_types = ["\Heuristic"]
 
     # this block will create a dictionary with the AA sessions for each AA type
     AA_sessions = {}
@@ -143,30 +143,20 @@ def main():
 if __name__ == "__main__":
     humanTeamScores, human_scores, AA_scores = main()
     AA_scores_heur = []
-    AA_scores_hybr = []
-    AA_scores_self = []
+    
     human_scores_heur = []
-    human_scores_hybr = []
-    human_scores_self = []
+    
     for session in AA_scores.keys():
         # if session starts with Session1
         if session.startswith("Session1"):
             AA_scores_heur.append(AA_scores[session].mean())
             human_scores_heur.append(human_scores[session].mean())
-        elif session.startswith("Session2"):
-            AA_scores_hybr.append(AA_scores[session].mean())
-            human_scores_hybr.append(human_scores[session].mean())
-        elif session.startswith("Session3"):
-            AA_scores_self.append(AA_scores[session].mean())
-            human_scores_self.append(human_scores[session].mean())
+
 
     AA_scores_heur = np.array(AA_scores_heur) 
-    AA_scores_hybr = np.array(AA_scores_hybr) 
-    AA_scores_self = np.array(AA_scores_self) 
+ 
 
     human_scores_heur = np.array(human_scores_heur) 
-    human_scores_hybr = np.array(human_scores_hybr) 
-    human_scores_self = np.array(human_scores_self) 
 
 
     #save the human team traces
@@ -174,10 +164,8 @@ if __name__ == "__main__":
 
     # save the AA_scores
     np.save("AA_scores_heur.npy", AA_scores_heur)
-    np.save("AA_scores_hybr.npy", AA_scores_hybr)
-    np.save("AA_scores_self.npy", AA_scores_self)
+
 
     #save the human scores
     np.save("human_scores_heur.npy", human_scores_heur)
-    np.save("human_scores_hybr.npy", human_scores_hybr)
-    np.save("human_scores_self.npy", human_scores_self)
+
