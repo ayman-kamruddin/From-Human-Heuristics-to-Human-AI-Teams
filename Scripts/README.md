@@ -30,7 +30,7 @@ This statistical test, and the box plot it makes, uses the:
 a. First, run `get_actual_Dynamic_Policy_as_csv_Human-AA.py`. This will get you the TSp binary encoded vectors per trial for all agent types (Heuristic, Human-Sensitive and SelfPlay) and their corresponding human team-mates.  
 b. To prepare the dataset required for this, run `calcAllDTW.py`. This will save data in .csv format.  
 c. Use `human_scores_heur.csv`, `AA_scores_heur.csv` and `humanTeamDTWs.csv` to run the stats. First, convert them into a format suitable for the stats using `convert_scores_exp2.py`.  
-d. You can use `exp2_TargetOverlap_Analysis.ipynb`  to get the box plot. 
+d. You can use `exp2_TargetOverlap_Analysis.ipynb`  to get the box plot.  
 e. Use `R_Analysis_Exp2.R` to run the stats.  
 
 
