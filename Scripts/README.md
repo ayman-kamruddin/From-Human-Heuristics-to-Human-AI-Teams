@@ -1,5 +1,3 @@
-Note that there are several scripts with the suffix _v1 or _v2. v1 refers to the TSp calculation with multiple engagements, and v2 refers to the TSp with the closest engagement only.
-
 There are several files here and here is the order that you should run them in:
 
 Use the simulated data presented in the folder, present in `OtherResults\AA-AA_SimulationData`.
