@@ -34,7 +34,8 @@ Contains utility scripts for processing data and generating figures:
 
 ## Usage
 1. **Running Experiments**: Use executables in `Experiment-HumanHuman` to run human-human experiments.
-2. **Analyzing and Visualising Results**: Use scripts in `Scripts` to analyze raw data and generate plots.
+2. Place the data folder, present ***here***, in the root directory of the project.
+3. **Analyzing and Visualising Results**: Use scripts in `Scripts` to analyze raw data and generate plots.
 
 ## Dependencies
 - Unity runtime (`UnityPlayer.dll`, `MonoBleedingEdge`)
