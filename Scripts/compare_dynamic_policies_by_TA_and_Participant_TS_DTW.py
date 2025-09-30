@@ -25,14 +25,14 @@ numHerders = 2
 maxTargets = 5
 firstTrial = 7
 lastTrial = 24 + 1 # +1 for python indexing
-policy_folder = wd + "\OtherResults\TS_Dynamic_Policy"
+policy_folder = wd + "/OtherResults/TS_Dynamic_Policy"
 
 
 human_sessions_directories = os.listdir(policy_folder+"\Human") # list of all sessions (ie, participants)
 columns=["Session", "Player", "3TAs", "4TAs", "5TAs"]
 intermediary_columns = ["Session", "Player", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
 
-output_dir = wd+"\OtherResults\DTW_TS_Errors"
+output_dir = wd+"/OtherResults/DTW_TS_Errors"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -43,7 +43,7 @@ for simulation_key in trange(len(simulations)): # for each simulation type
 
     print("Processing Simulation: ", simulations[simulation_key][1:])
 
-    simulation_sessions_directory = policy_folder+"\Simulation" + simulations[simulation_key]
+    simulation_sessions_directory = policy_folder+"/Simulation" + simulations[simulation_key]
 
     for trial in range(firstTrial, lastTrial):
         print("Processing Trial: ", trial)
@@ -51,13 +51,13 @@ for simulation_key in trange(len(simulations)): # for each simulation type
         for hcount, human_session in enumerate(human_sessions_directories):
             print("Processing Session: ", human_session)
             trial_ID = str(trial)
-            part_dir = Path(os.path.join(policy_folder+"\Human", human_session))
+            part_dir = Path(os.path.join(policy_folder+"/Human", human_session))
 
             #get the file path for the human file that has the trial data, matched with the trailIdentifier, using rglob
             human_filePath = part_dir / ("trialIdentifier_"+trial_ID+".csv")
 
 
-            simulation_filePath = simulation_sessions_directory+"\\SessionSIM\\trialIdentifier_"+trial_ID+".csv"
+            simulation_filePath = simulation_sessions_directory+"/SessionSIM/trialIdentifier_"+trial_ID+".csv"
             human_data = pd.read_csv(human_filePath)
             sim_data = pd.read_csv(simulation_filePath)
             assert(human_data['TrialID'][0] == sim_data['TrialID'][0])

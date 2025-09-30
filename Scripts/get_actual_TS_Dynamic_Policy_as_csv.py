@@ -154,13 +154,13 @@ for simulation_bool in [False, True]:
             columns = ["time","TrialID", "numTargs","HA0TA0", "HA0TA1", "HA0TA2", "HA0TA3", "HA0TA4","HA1TA0", "HA1TA1", "HA1TA2", "HA1TA3", "HA1TA4"]
 
             for session in tqdm(sessions_directories, desc="Sessions"):
-                output_filename_folder = output_header + "\\" + simulation_type + "\\" + session
+                output_filename_folder = output_header + "/" + simulation_type + "/" + session
                 if not os.path.exists(output_path + output_filename_folder):
                     os.mkdir(output_path + output_filename_folder)
                 for trial in trange(firstTrial, lastTrial, desc="Trials", leave=False):
-                    output_filename = "\\trialIdentifier_"+str(trial) + ".csv" #one file per trial
+                    output_filename = "/trialIdentifier_"+str(trial) + ".csv" #one file per trial
                     trial_ID = "{:02}".format(trial)
-                    part_dir = Path(os.path.join(dataDir, session+'\ExperimentData'))
+                    part_dir = Path(os.path.join(dataDir, session+'/ExperimentData'))
                     file_path = [path for path in part_dir.rglob('*trialIdentifier'+trial_ID+'*')][0]
                     trialData = pd.read_csv(file_path)
                     dynamicPolicyTimeSeries = get_actual_Dynamic_Policy_as_csv(trial, trialData)  #0 and 1 encoded HA-TA engagement
@@ -189,13 +189,13 @@ for simulation_bool in [False, True]:
         columns = ["time","TrialID", "numTargs","HA0TA0", "HA0TA1", "HA0TA2", "HA0TA3", "HA0TA4","HA1TA0", "HA1TA1", "HA1TA2", "HA1TA3", "HA1TA4"]
 
         for session in tqdm(sessions_directories, desc="Sessions"):
-            output_filename_folder = output_header + "\\" + session
+            output_filename_folder = output_header + "/" + session
             if not os.path.exists(output_path + output_filename_folder):
                 os.mkdir(output_path + output_filename_folder)
             for trial in trange(firstTrial, lastTrial, desc="Trials", leave=False):
-                output_filename = "\\trialIdentifier_"+str(trial) + ".csv" #one file per trial
+                output_filename = "/trialIdentifier_"+str(trial) + ".csv" #one file per trial
                 trial_ID = "{:02}".format(trial)
-                part_dir = Path(os.path.join(dataDir, session+'\ExperimentData'))
+                part_dir = Path(os.path.join(dataDir, session+'/ExperimentData'))
                 filePath = [path for path in part_dir.rglob('*trialIdentifier'+trial_ID+'*')][0] #0 because assuming only one such file exists
                 trialData = pd.read_csv(filePath)
                 dynamicPolicyTimeSeries = get_actual_Dynamic_Policy_as_csv(trial, trialData)  #0 and 1 encoded HA-TA engagement

@@ -1,0 +1,88 @@
+# macOS
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Results and outputs (keep structure, ignore contents)
+results/
+OtherResults/TS_Dynamic_Policy/
+OtherResults/AA_scores_traces/
+OtherResults/binaryTraceOverlaps/
+*.png
+*.pdf
+*.svg
+!docs/**/*.png
+!docs/**/*.pdf
+
+# Data (large files - download separately)
+# Keep directory structure with .gitkeep files
+RAW_EXPERIMENT_DATA/**/*.csv
+!RAW_EXPERIMENT_DATA/.gitkeep
+!RAW_EXPERIMENT_DATA/*/.gitkeep
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# OS-specific
+Thumbs.db
+Desktop.ini
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+
+# Unity-specific (for experiment builds)
+*.csproj
+*.unityproj
+*.sln

@@ -1,0 +1,199 @@
+# Figure Configuration for Publication
+# From Human Heuristics to Human-AI Teams: Modeling Multiagent First-Person Herding
+#
+# This configuration ensures all figures match the formatting requirements for
+# Journal of Experimental Psychology: Human Perception and Performance (JEP: HPP)
+#
+# All figures use consistent styling to match publication standards
+
+# Global figure settings
+global:
+  dpi: 300  # Publication quality
+  format: "pdf"  # Primary format for publication
+  export_formats: ["pdf", "png", "svg"]  # Export in multiple formats
+  font_family: "Arial"  # APA standard font
+  font_size_base: 10
+  transparent_background: false
+
+# Color schemes
+colors:
+  # Policy colors for Target Selection analyses (consistent across experiments)
+  policies:
+    SCA: "#E69F00"  # Successive Collinear Angle (orange)
+    SCD: "#56B4E9"  # Successive Collinear Distance (sky blue)
+    SA: "#009E73"   # Successive Angle (green)
+    SD: "#F0E442"   # Successive Distance (yellow)
+    DCZ: "#0072B2"  # Distance from Containment Zone (blue)
+
+  # Agent type colors for Experiment 2
+  agents:
+    human: "#56B4E9"      # Blue for human
+    artificial: "#E69F00"  # Orange for AI agent
+    surrogate: "#999999"   # Gray for surrogate baseline
+
+  # Target number colors
+  targets:
+    "3": "#009E73"  # Green
+    "4": "#0072B2"  # Blue
+    "5": "#D55E00"  # Red
+
+# Typography
+typography:
+  title_size: 12
+  axis_label_size: 10
+  tick_label_size: 9
+  legend_size: 9
+  annotation_size: 8
+
+# Figure dimensions (in inches)
+figure_sizes:
+  # Single column figure (JEP: HPP standard)
+  single_column:
+    width: 3.5
+    height: 3.5
+
+  # Double column figure
+  double_column:
+    width: 7.0
+    height: 3.5
+
+  # Full page figure
+  full_page:
+    width: 7.0
+    height: 9.0
+
+  # Box plot (standard for overlap analyses)
+  boxplot:
+    width: 4.5
+    height: 3.5
+
+# Box plot specific settings (for Target Selection & Binary Trace analyses)
+boxplot:
+  box_width: 0.6
+  whisker_linewidth: 1.5
+  median_linewidth: 2
+  flier_size: 3
+  flier_marker: "o"
+  show_means: false
+  patch_artist: true  # Fill boxes with color
+  box_alpha: 0.7
+  edge_color: "#000000"
+  edge_linewidth: 1.0
+
+# Axis settings
+axes:
+  linewidth: 1.0
+  grid: false
+  grid_alpha: 0.3
+  grid_linestyle: "--"
+  spine_top: false
+  spine_right: false
+
+# Legend settings
+legend:
+  frameon: true
+  framealpha: 0.9
+  fancybox: false
+  shadow: false
+  borderpad: 0.5
+  labelspacing: 0.5
+  handlelength: 2.0
+
+# Specific figure configurations
+# Map paper figures to analysis outputs
+
+figures:
+  # Experiment 1 Figures
+
+  figure_4_target_selection_exp1:
+    description: "Target selection overlap for Experiment 1 (human-human)"
+    corresponds_to: "Figure 4 (top) in manuscript"
+    size: "boxplot"
+    x_label: "Target Number"
+    y_label: "% Target Selection Overlap"
+    y_limits: [0.80, 1.00]
+    legend_location: "lower left"
+    policies_shown: ["SCA", "SCD", "SA", "SD", "DCZ"]
+    filename: "Fig4_Exp1_TargetSelection_Overlap"
+
+  figure_4_binary_trace_exp1:
+    description: "Binary trace overlap for Experiment 1 (human-human)"
+    corresponds_to: "Figure 4 (bottom) in manuscript"
+    size: "boxplot"
+    x_label: "Target Number"
+    y_label: "% Binary Trace Overlap"
+    y_limits: [0.80, 1.00]
+    legend_location: "lower left"
+    policies_shown: ["SCA", "SCD", "SA", "SD", "DCZ"]
+    filename: "Fig4_Exp1_BinaryTrace_Overlap"
+
+  # Experiment 2 Figures
+
+  figure_5_target_selection_exp2:
+    description: "Target selection overlap for Experiment 2 (human-AI)"
+    corresponds_to: "Figure 5 (top) in manuscript"
+    size: "boxplot"
+    x_label: "Target Number"
+    y_label: "Target Selection Overlap"
+    y_limits: [0.60, 1.00]
+    legend_location: "lower right"
+    agents_shown: ["artificial", "human", "surrogate"]
+    filename: "Fig5_Exp2_TargetSelection_Overlap"
+
+  figure_5_binary_trace_exp2:
+    description: "Binary trace overlap for Experiment 2 (human-AI)"
+    corresponds_to: "Figure 5 (bottom) in manuscript"
+    size: "boxplot"
+    x_label: "Target Number"
+    y_label: "Binary Trace Overlap"
+    y_limits: [0.50, 1.00]
+    legend_location: "lower right"
+    agents_shown: ["artificial", "human", "surrogate"]
+    filename: "Fig5_Exp2_BinaryTrace_Overlap"
+
+  # Trajectory visualization (example trial)
+  figure_3_trajectory_example:
+    description: "Example trajectories and binary traces"
+    corresponds_to: "Figure 3 in manuscript"
+    size: "double_column"
+    filename: "Fig3_Trajectory_Example"
+
+  # Task environment illustration
+  figure_2_task_environment:
+    description: "Task environment screenshots"
+    corresponds_to: "Figure 2 in manuscript"
+    size: "double_column"
+    filename: "Fig2_Task_Environment"
+
+# Statistical annotation settings
+statistics:
+  show_significance: true
+  significance_markers:
+    "p < 0.001": "***"
+    "p < 0.01": "**"
+    "p < 0.05": "*"
+    "p >= 0.05": "ns"
+  annotation_fontsize: 8
+  annotation_height: 0.02  # Relative to y-axis range
+
+# Output paths (relative to project root)
+output:
+  figures_dir: "results/figures"
+  supplementary_dir: "results/figures/supplementary"
+  create_subdirs: true
+  timestamp_files: false  # Set to true for drafts, false for final
+
+# Export settings
+export:
+  pdf:
+    dpi: 300
+    bbox_inches: "tight"
+    pad_inches: 0.1
+  png:
+    dpi: 300
+    bbox_inches: "tight"
+    pad_inches: 0.1
+    transparent: false
+  svg:
+    bbox_inches: "tight"
+    pad_inches: 0.1
