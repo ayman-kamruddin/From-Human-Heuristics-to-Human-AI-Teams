@@ -179,10 +179,9 @@ Comparing Target Selection Policies between human-AA teams and human-human basel
 
 5. **Run statistical analysis**
    ```bash
-   Rscript R_Analysis_Exp2.R
+   Rscript Exp2_Stats_Analysis_TSOverlap.R
    ```
    - **Prerequisites**: Steps 1-4 must complete successfully first
-   - **Note**: Edit the script (lines 28-32) to uncomment the TSp DTW data file path (this is the default setting)
    - **Input**: `OtherResults/TSp_DTWs/targetselectionoverlap.csv`
    - **Output**: Statistical comparisons across agent types
 
@@ -218,10 +217,9 @@ Comparing spatial trajectories using binary trace overlap metrics.
 
 4. **Run statistical analysis**
    ```bash
-   Rscript R_Analysis_Exp2.R
+   Rscript Exp2_Stats_Analysis_BinaryTrace.R
    ```
    - **Prerequisites**: Steps 1-3 must complete successfully first
-   - **Note**: Edit the script (lines 28-32) to comment out TSp path and uncomment the Binary Trace data file path
    - **Input**: `OtherResults/binaryTraceOverlaps/binarytraceoverlap.csv`
    - **Output**: Statistical comparisons across agent types
 

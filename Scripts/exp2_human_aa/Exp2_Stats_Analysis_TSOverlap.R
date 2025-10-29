@@ -24,11 +24,6 @@ get_script_dir <- function() {
 script_dir <- get_script_dir()
 project_root <- normalizePath(file.path(script_dir, "..", ".."))
 
-# Choose which analysis to run (comment/uncomment as needed):
-# Option 1: Binary Trace Overlap
-#data_file <- file.path(project_root, "OtherResults", "binaryTraceOverlaps", "binarytraceoverlap.csv")
-
-# Option 2: Target Selection Overlap (TSp DTW) - default
 data_file <- file.path(project_root, "OtherResults", "TSp_DTWs", "targetselectionoverlap.csv")
 
 # Check if file exists
