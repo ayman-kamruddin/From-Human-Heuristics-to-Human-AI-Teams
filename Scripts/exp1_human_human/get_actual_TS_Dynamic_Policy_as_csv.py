@@ -9,16 +9,18 @@ The output csv file has the following columns:
     - numTargs: the number of targets in the trial
 """
 import os # for directories
+import sys # for path manipulation
 from pathlib import Path # path functions
 import pandas as pd
+# Add parent directory to path to import tools
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from tools.utils import get_chaser, get_num_targets # for project-specific custom functions
 import numpy as np
 from tqdm import tqdm, trange
 
 max_TAs = 5 # maximum number of targets in the experiment
 
-wd = Path(os.path.dirname(os.path.realpath(__file__))
-              ).parents[0] # project working directory
+wd = Path(os.path.dirname(os.path.realpath(__file__))).parents[1] # project working directory
 
 
 output_path = os.path.join(wd, "OtherResults", "TS_Dynamic_Policy")
@@ -132,12 +134,12 @@ for simulation_bool in [False, True]:
         simulation_types = ["CollinearAngle", "CollinearDistance", "Angle", "Distance", "ContainmentZone"]
         for simulation_type in simulation_types:
             dataDir = os.path.join(wd, 'OtherResults', 'AA-AA_SimulationData', simulation_type) # Directory of all data files
-            output_header = "\Simulation"
+            output_header = "Simulation"
 
-            if not os.path.exists(output_path + output_header):
-                os.mkdir(output_path + output_header)
+            if not os.path.exists(os.path.join(output_path, output_header)):
+                os.mkdir(os.path.join(output_path, output_header))
 
-            output_folder = output_path + output_header + "\\" + simulation_type
+            output_folder = os.path.join(output_path, output_header, simulation_type)
             if not os.path.exists(output_folder):
                 os.mkdir(output_folder)
 
@@ -154,25 +156,37 @@ for simulation_bool in [False, True]:
             columns = ["time","TrialID", "numTargs","HA0TA0", "HA0TA1", "HA0TA2", "HA0TA3", "HA0TA4","HA1TA0", "HA1TA1", "HA1TA2", "HA1TA3", "HA1TA4"]
 
             for session in tqdm(sessions_directories, desc="Sessions"):
-                output_filename_folder = output_header + "\\" + simulation_type + "\\" + session
-                if not os.path.exists(output_path + output_filename_folder):
-                    os.mkdir(output_path + output_filename_folder)
+                # Skip hidden files and directories (like .DS_Store)
+                if session.startswith('.'):
+                    continue
+
+                output_filename_folder = os.path.join(output_header, simulation_type, session)
+                if not os.path.exists(os.path.join(output_path, output_filename_folder)):
+                    os.mkdir(os.path.join(output_path, output_filename_folder))
                 for trial in trange(firstTrial, lastTrial, desc="Trials", leave=False):
-                    output_filename = "\\trialIdentifier_"+str(trial) + ".csv" #one file per trial
+                    output_filename = "trialIdentifier_"+str(trial) + ".csv" #one file per trial
                     trial_ID = "{:02}".format(trial)
-                    part_dir = Path(os.path.join(dataDir, session+'\ExperimentData'))
-                    file_path = [path for path in part_dir.rglob('*trialIdentifier'+trial_ID+'*')][0]
+                    part_dir = Path(os.path.join(dataDir, session, 'ExperimentData'))
+
+                    # Find matching files
+                    matching_files = [path for path in part_dir.rglob('*trialIdentifier'+trial_ID+'*')]
+
+                    if len(matching_files) == 0:
+                        print(f"\nWarning: No file found for {simulation_type}, session {session}, trial {trial_ID}. Skipping...")
+                        continue
+
+                    file_path = matching_files[0]
                     trialData = pd.read_csv(file_path)
                     dynamicPolicyTimeSeries = get_actual_Dynamic_Policy_as_csv(trial, trialData)  #0 and 1 encoded HA-TA engagement
                     collapsedDynamicPolicyTimeSeries = collapse_actual_dynamic_engagement(dynamicPolicyTimeSeries, trialData)
 
-                    
-                    pd.DataFrame(data=collapsedDynamicPolicyTimeSeries).to_csv(output_path + output_filename_folder + output_filename, index=False)
+
+                    pd.DataFrame(data=collapsedDynamicPolicyTimeSeries).to_csv(os.path.join(output_path, output_filename_folder, output_filename), index=False)
                     
     else: # if real data
         dataDir = os.path.join(wd, 'RAW_EXPERIMENT_DATA', 'TWO-HUMAN_HAs') # Directory of all data files
-        output_header = "\Human"
-        output_folder = output_path + output_header
+        output_header = "Human"
+        output_folder = os.path.join(output_path, output_header)
         if not os.path.exists(output_folder):
             os.mkdir(output_folder)
 
@@ -189,17 +203,29 @@ for simulation_bool in [False, True]:
         columns = ["time","TrialID", "numTargs","HA0TA0", "HA0TA1", "HA0TA2", "HA0TA3", "HA0TA4","HA1TA0", "HA1TA1", "HA1TA2", "HA1TA3", "HA1TA4"]
 
         for session in tqdm(sessions_directories, desc="Sessions"):
-            output_filename_folder = output_header + "\\" + session
-            if not os.path.exists(output_path + output_filename_folder):
-                os.mkdir(output_path + output_filename_folder)
+            # Skip hidden files and directories (like .DS_Store)
+            if session.startswith('.'):
+                continue
+
+            output_filename_folder = os.path.join(output_header, session)
+            if not os.path.exists(os.path.join(output_path, output_filename_folder)):
+                os.mkdir(os.path.join(output_path, output_filename_folder))
             for trial in trange(firstTrial, lastTrial, desc="Trials", leave=False):
-                output_filename = "\\trialIdentifier_"+str(trial) + ".csv" #one file per trial
+                output_filename = "trialIdentifier_"+str(trial) + ".csv" #one file per trial
                 trial_ID = "{:02}".format(trial)
-                part_dir = Path(os.path.join(dataDir, session+'\ExperimentData'))
-                filePath = [path for path in part_dir.rglob('*trialIdentifier'+trial_ID+'*')][0] #0 because assuming only one such file exists
+                part_dir = Path(os.path.join(dataDir, session, 'ExperimentData'))
+
+                # Find matching files
+                matching_files = [path for path in part_dir.rglob('*trialIdentifier'+trial_ID+'*')]
+
+                if len(matching_files) == 0:
+                    print(f"\nWarning: No file found for session {session}, trial {trial_ID}. Skipping...")
+                    continue
+
+                filePath = matching_files[0] #0 because assuming only one such file exists
                 trialData = pd.read_csv(filePath)
                 dynamicPolicyTimeSeries = get_actual_Dynamic_Policy_as_csv(trial, trialData)  #0 and 1 encoded HA-TA engagement
                 collapsedDynamicPolicyTimeSeries = collapse_actual_dynamic_engagement(dynamicPolicyTimeSeries, trialData)
 
-                
-                pd.DataFrame(data=collapsedDynamicPolicyTimeSeries).to_csv(output_path + output_filename_folder + output_filename, index=False)
+
+                pd.DataFrame(data=collapsedDynamicPolicyTimeSeries).to_csv(os.path.join(output_path, output_filename_folder, output_filename), index=False)

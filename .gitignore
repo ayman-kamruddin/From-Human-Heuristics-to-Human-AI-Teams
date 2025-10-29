@@ -1,2 +1,33 @@
-        **/.DS_Store
-        .DS_Store
+OtherResults/
+RAW_EXPERIMENT_DATA/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+herding-analysis/
+
+# Conda
+.conda/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

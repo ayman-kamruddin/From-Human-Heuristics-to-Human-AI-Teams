@@ -5,9 +5,35 @@ library(emmeans)    # For post-hoc comparisons
 library(tidyverse)  # For data manipulation and visualization
 library(crayon)     # For colorized console output
 
-#set working directory to the location of the data
-#data <- read.csv("C:/Users/MQ20208365/Documents/GitHub/Multi-Player_Multi-Target/OtherResults/DTW_TS_Errors/combined_targetselectionoverlap_data_for_R.csv")
-data <- read.csv("C:/Users/MQ20208365/Documents/GitHub/Multi-Player_Multi-Target/OtherResults/AA_scores_traces/combined_binarytraceoverlap_data_for_R.csv")
+# Get the project root directory (2 levels up from this script)
+# This works for both Rscript and RStudio
+get_script_dir <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    # Running via Rscript
+    return(dirname(sub("^--file=", "", file_arg)))
+  } else if (!is.null(sys.frames()[[1]]$ofile)) {
+    # Running in RStudio with source()
+    return(dirname(sys.frames()[[1]]$ofile))
+  } else {
+    # Fallback: use current working directory
+    return(getwd())
+  }
+}
+
+script_dir <- get_script_dir()
+project_root <- normalizePath(file.path(script_dir, "..", ".."))
+
+data_file <- file.path(project_root, "OtherResults", "AA_scores_traces", "combined_binarytraceoverlap_data_for_R.csv")
+
+# Check if file exists
+if (!file.exists(data_file)) {
+  stop(paste("Data file not found:", data_file, "\nPlease run the corresponding Jupyter notebook first to generate this file."))
+}
+
+cat("Reading data from:", data_file, "\n")
+data <- read.csv(data_file)
 # Ensure factors are properly set for categorical variables
 data$Policy <- as.factor(data$Policy)
 data$TACondition <- as.factor(data$TACondition)

@@ -4,13 +4,40 @@ library(lmerTest)  # For F-tests with Kenward-Roger degrees of freedom
 library(emmeans)  # For post-hoc pairwise comparisons
 library(pbkrtest)  # Ensure Kenward-Roger works correctly
 
-# Set working directory
-setwd("C:/Users/MQ20208365/Documents/GitHub/Multi-Player_Multi-Target/OtherResults/binaryTraceOverlaps")
-setwd("C:/Users/MQ20208365/Documents/GitHub/Multi-Player_Multi-Target/OtherResults/TSp_DTWs")
+# Get the project root directory (2 levels up from this script)
+# This works for both Rscript and RStudio
+get_script_dir <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    # Running via Rscript
+    return(dirname(sub("^--file=", "", file_arg)))
+  } else if (!is.null(sys.frames()[[1]]$ofile)) {
+    # Running in RStudio with source()
+    return(dirname(sys.frames()[[1]]$ofile))
+  } else {
+    # Fallback: use current working directory
+    return(getwd())
+  }
+}
 
-# Load the combined data
-#combined_data <- read.csv('binarytraceoverlap.csv')
-combined_data <- read.csv('targetselectionoverlap.csv')
+script_dir <- get_script_dir()
+project_root <- normalizePath(file.path(script_dir, "..", ".."))
+
+# Choose which analysis to run (comment/uncomment as needed):
+# Option 1: Binary Trace Overlap
+#data_file <- file.path(project_root, "OtherResults", "binaryTraceOverlaps", "binarytraceoverlap.csv")
+
+# Option 2: Target Selection Overlap (TSp DTW) - default
+data_file <- file.path(project_root, "OtherResults", "TSp_DTWs", "targetselectionoverlap.csv")
+
+# Check if file exists
+if (!file.exists(data_file)) {
+  stop(paste("Data file not found:", data_file, "\nPlease run the corresponding Jupyter notebook first to generate this file."))
+}
+
+cat("Reading data from:", data_file, "\n")
+combined_data <- read.csv(data_file)
 
 # Convert relevant columns to factors
 combined_data$Pair <- as.factor(combined_data$Pair)

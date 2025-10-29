@@ -8,21 +8,21 @@ import pandas as pd
 from pathlib import Path
 
 cwd = os.path.dirname(__file__) # current working directory
-wd = Path(cwd).parents[0] # project working directory
+wd = Path(cwd).parents[1] # project working directory
 
 #read in AA_scores_heur.csv, human_scores_heur.csv and humanTeamTraces.csv(or humanTeamDTWs.csv) files from ../OtherResults/appropriate_folder
 #where appropriate_folder is one of "TSp_DTWs" or "binaryTraceOverlaps"
 
 
-input_folder = "TSp_DTWs" # one of "TSp_DTWs" or "binaryTraceOverlaps"
+input_folder = "binaryTraceOverlaps" # one of "TSp_DTWs" or "binaryTraceOverlaps"
 
-AA_scores_heur = pd.read_csv(os.path.join(wd,'OtherResults\\'+input_folder+'\\AA_scores_heur.csv'))
-human_scores_heur = pd.read_csv(os.path.join(wd,'OtherResults\\'+input_folder+'\\human_scores_heur.csv'))
+AA_scores_heur = pd.read_csv(os.path.join(wd, 'OtherResults', input_folder, 'AA_scores_heur.csv'))
+human_scores_heur = pd.read_csv(os.path.join(wd, 'OtherResults', input_folder, 'human_scores_heur.csv'))
 
 if input_folder == "binaryTraceOverlaps":
-    humanTeamScores = pd.read_csv(os.path.join(wd,'OtherResults\\'+input_folder+'\\humanTeamTraces.csv'))
+    humanTeamScores = pd.read_csv(os.path.join(wd, 'OtherResults', input_folder, 'humanTeamTraces.csv'))
 else:
-    humanTeamScores = pd.read_csv(os.path.join(wd,'OtherResults\\'+input_folder+'\\humanTeamDTWs.csv'))
+    humanTeamScores = pd.read_csv(os.path.join(wd, 'OtherResults', input_folder, 'humanTeamDTWs.csv'))
 
 
 
@@ -70,6 +70,6 @@ all_scores = all_scores[['pair', 'agent_type', '7', '8', '9', '10', '11', '12', 
                          '17', '18', '19', '20', '21', '22', '23', '24']]
 # save the file
 if input_folder == "binaryTraceOverlaps":
-    all_scores.to_csv(os.path.join(wd,'OtherResults/'+input_folder+'/human_AHA_binarytracescores_heur.csv'), index=False)
+    all_scores.to_csv(os.path.join(wd, 'OtherResults', input_folder, 'human_AHA_binarytracescores_heur.csv'), index=False)
 else:
-    all_scores.to_csv(os.path.join(wd,'OtherResults/'+input_folder+'/human_AHA_TSpDTWscores_heur.csv'), index=False)
+    all_scores.to_csv(os.path.join(wd, 'OtherResults', input_folder, 'human_AHA_TSpDTWscores_heur.csv'), index=False)
