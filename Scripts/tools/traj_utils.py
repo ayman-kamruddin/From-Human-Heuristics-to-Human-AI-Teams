@@ -29,6 +29,16 @@ Output:
 traces: np.array of traces for the given trial for the given trajectory set
 """
 def get_binary_trace(X, Z, individialData, agent):
+    # Validate input arrays are not empty
+    if len(X) == 0 or len(Z) == 0:
+        print(f"Warning: Empty trajectory data for agent {agent}. Returning 0.")
+        return 0.0
+
+    # Validate individual data exists
+    if agent+'x' not in individialData.columns or agent+'z' not in individialData.columns:
+        print(f"Warning: Agent columns {agent}x/{agent}z not found in data. Returning 0.")
+        return 0.0
+
     h, _, _ = np.histogram2d(x = X.flatten(), y = Z.flatten(),  bins = (int(120/bin_size), int(90/bin_size)), range = ((-xlim, xlim), (-ylim,ylim)))
     weighted_heatmap = np.sqrt((h.T[::-1]))
     binary_heatmap = weighted_heatmap > threshold

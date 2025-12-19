@@ -17,22 +17,22 @@ num_trials = last_trial - first_trial
 
 def main():
     cwd = os.path.dirname(__file__) # current working directory
-    wd = Path(cwd).parents[0] # project working directory
-    humanDataDir = os.path.join(wd,'OtherResults\TS_Dynamic_Policy\Human') # directory containing human-human TSp data
+    wd = Path(cwd).parents[1] # project working directory
+    humanDataDir = os.path.join(wd,'OtherResults','TS_Dynamic_Policy','Human') # directory containing human-human TSp data
     human_human_sessions = os.listdir(humanDataDir)
     num_humanhumanSessions = len(human_human_sessions)
-    
-    AA_types = ["\Heuristic"]
+
+    AA_types = ["Heuristic"]
 
     # this block will create a dictionary with the AA sessions for each AA type
     AA_sessions = {}
     for AA_type in AA_types:
-        AA_path = os.path.join(wd,'RAW_EXPERIMENT_DATA\HUMAN-AA_TEAM'+AA_type)
+        AA_path = os.path.join(wd,'RAW_EXPERIMENT_DATA','HUMAN-AA_TEAM', AA_type)
         lowest_level_dirs = list()
         for root,dirs,files in os.walk(AA_path):
             if not dirs:
                 lowest_level_dirs.append(Path(root).parent.name)
-        AA_sessions[AA_type[1:]] = lowest_level_dirs
+        AA_sessions[AA_type] = lowest_level_dirs
 
     #print(AA_sessions)
 
@@ -41,7 +41,7 @@ def main():
     #create a dictionary to store the normalised DTW scores for each human in the human-AA sessions
     human_scores = {}
     for human_type in AA_types:
-        for session in AA_sessions[human_type[1:]]:
+        for session in AA_sessions[human_type]:
             human_scores[session] = np.zeros(num_trials)
     #print(human_scores)
 
@@ -50,7 +50,7 @@ def main():
     #create a dictionary to store the normalised DTW scores for each AA in the human-AA sessions
     AA_scores = {}
     for AA_type in AA_types:
-        for session in AA_sessions[AA_type[1:]]:
+        for session in AA_sessions[AA_type]:
             AA_scores[session] = np.zeros(num_trials)
 
 
@@ -63,15 +63,15 @@ def main():
             for trial in range(first_trial,last_trial): #loop over trials
                 print('\r'+"Processing trial "+ str(trial)+ " for player "+ str(player))
                 trial_ID = "_"+str(trial)  #"{:02}".format(trial)
-                backgroundFilePaths = [[path for path in Path(humanDataDir+'\\'+background_session).rglob('*trialIdentifier'+trial_ID+'*')] for background_session in background_sessions]
-                evalFile = [path for path in Path(humanDataDir+'\\'+evaluee_session).rglob('*trialIdentifier'+trial_ID+'*')][0]     
+                backgroundFilePaths = [[path for path in Path(os.path.join(humanDataDir, background_session)).rglob('*trialIdentifier'+trial_ID+'*')] for background_session in background_sessions]
+                evalFile = [path for path in Path(os.path.join(humanDataDir, evaluee_session)).rglob('*trialIdentifier'+trial_ID+'*')][0]     
                 evalueeData = pd.read_csv(evalFile)   
 
 
-                for subFolder in ["\HumanPlayer0", "\HumanPlayer1"]:
+                for subFolder in ["HumanPlayer0", "HumanPlayer1"]:
                     for _, AA_type in enumerate(AA_types):
-                        expDir = os.path.join(wd, 'OtherResults\Actual_Dynamic_Policies_HumanAA'+AA_type)
-                        expFiles = [path for path in Path(expDir+subFolder).rglob('*trialIdentifier'+trial_ID+'*')]
+                        expDir = os.path.join(wd, 'OtherResults','Actual_Dynamic_Policies_HumanAA', AA_type)
+                        expFiles = [path for path in Path(os.path.join(expDir, subFolder)).rglob('*trialIdentifier'+trial_ID+'*')]
                         for expFile in tqdm(expFiles) : #include a progress bar
 
                             session_name = Path(expFile).parent.name
@@ -82,7 +82,7 @@ def main():
                             haCol = "HA%d" % player
                             colNames = [haCol + taCol for taCol in taCols]
 
-                            if player == 0 and subFolder == "\HumanPlayer0" or player == 1 and subFolder == "\HumanPlayer1":
+                            if player == 0 and subFolder == "HumanPlayer0" or player == 1 and subFolder == "HumanPlayer1":
                         
                                 AAteamTS = [AAteamData[col].to_numpy() for col in colNames]
                                 trialscount = 0
@@ -90,13 +90,14 @@ def main():
                                     try:
                                         backgroundData = pd.read_csv(backgroundFilePath[0]) #"Error reading file: not present as trial was unsuccessful. Will continue to next trial."
                                         trialscount+=1
-                                    except:
+                                    except (FileNotFoundError, pd.errors.EmptyDataError, IndexError) as e:
+                                        print(f"\nWarning: Skipping file due to: {e}")
                                         continue
                                     backgroundTS = [backgroundData[col].to_numpy() for col in colNames]
-                                    human_scores[session_name][trial-first_trial] += 1 - dtw( np.column_stack([backgroundTS]).T, np.column_stack([AAteamTS]).T)[0] / (len(backgroundTS) * len(AAteamTS))
+                                    human_scores[session_name][trial-first_trial] += 1 - dtw( np.column_stack([backgroundTS]).T, np.column_stack([AAteamTS]).T)[0] / (len(backgroundTS) + len(AAteamTS))
                                 human_scores[session_name][trial-first_trial] /= trialscount
                             
-                            elif player == 0 and subFolder == "\HumanPlayer1" or player == 1 and subFolder == "\HumanPlayer0":
+                            elif player == 0 and subFolder == "HumanPlayer1" or player == 1 and subFolder == "HumanPlayer0":
                           
                                 AAteamTS = [AAteamData[col].to_numpy() for col in colNames]
                                 trialscount = 0 
@@ -104,10 +105,11 @@ def main():
                                     try:
                                         backgroundData = pd.read_csv(backgroundFilePath[0]) #print("Error reading file: not present as trial was unsuccessful. Will continue to next trial.")
                                         trialscount+=1
-                                    except:
+                                    except (FileNotFoundError, pd.errors.EmptyDataError, IndexError) as e:
+                                        print(f"\nWarning: Skipping file due to: {e}")
                                         continue
                                     backgroundTS = [backgroundData[col].to_numpy() for col in colNames]
-                                    AA_scores[session_name][trial-first_trial] += 1 - dtw( np.column_stack([backgroundTS]).T, np.column_stack([AAteamTS]).T)[0] / (len(backgroundTS) * len(AAteamTS))
+                                    AA_scores[session_name][trial-first_trial] += 1 - dtw( np.column_stack([backgroundTS]).T, np.column_stack([AAteamTS]).T)[0] / (len(backgroundTS) + len(AAteamTS))
                                 AA_scores[session_name][trial-first_trial] /= trialscount
 
                 trialscount = 0
@@ -116,7 +118,8 @@ def main():
                     try:
                         backgroundData = pd.read_csv(backgroundFilePath[0]) #print("Error reading file: not present as trial was unsuccessful. Will continue to next trial.")
                         trialscount+=1
-                    except:
+                    except (FileNotFoundError, pd.errors.EmptyDataError, IndexError) as e:
+                        print(f"\nWarning: Skipping file due to: {e}")
                         continue
 
                     
@@ -129,7 +132,7 @@ def main():
                     backgroundTS = [backgroundData[col].to_numpy() for col in headersHA]
                     evalueeTS =  [evalueeData[col].to_numpy() for col in headersHA]    #evalueeData['HA%d_engagement' % (player)]
 
-                    humanTeamScores[count][trial-first_trial] += 1 - dtw( np.column_stack([backgroundTS]).T, np.column_stack([evalueeTS]).T)[0] / (len(backgroundTS) * len(evalueeTS))
+                    humanTeamScores[count][trial-first_trial] += 1 - dtw( np.column_stack([backgroundTS]).T, np.column_stack([evalueeTS]).T)[0] / (len(backgroundTS) + len(evalueeTS))
                 humanTeamScores[count][trial-first_trial] /= trialscount
         
 

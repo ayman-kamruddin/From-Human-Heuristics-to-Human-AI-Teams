@@ -1,0 +1,38 @@
+TACondition = TACondition_3:
+ Agent_Type emmean      SE  df t.ratio p.value
+ Artificial  0.915 0.00539 157 169.691  <.0001
+ Human       0.874 0.00539 157 162.039  <.0001
+ Surrogate   0.870 0.00552 157 157.632  <.0001
+
+TACondition = TACondition_4:
+ Agent_Type emmean      SE  df t.ratio p.value
+ Artificial  0.872 0.00539 157 161.590  <.0001
+ Human       0.834 0.00539 157 154.569  <.0001
+ Surrogate   0.831 0.00552 157 150.430  <.0001
+
+TACondition = TACondition_5:
+ Agent_Type emmean      SE  df t.ratio p.value
+ Artificial  0.807 0.00539 157 149.541  <.0001
+ Human       0.740 0.00539 157 137.191  <.0001
+ Surrogate   0.740 0.00552 157 134.042  <.0001
+
+Degrees-of-freedom method: kenward-roger 
+TACondition = TACondition_3:
+ Agent_Type emmean      SE  df t.ratio p.value
+ Artificial  0.915 0.00539 157 169.691  <.0001
+ Human       0.874 0.00539 157 162.039  <.0001
+ Surrogate   0.870 0.00552 157 157.632  <.0001
+
+TACondition = TACondition_4:
+ Agent_Type emmean      SE  df t.ratio p.value
+ Artificial  0.872 0.00539 157 161.590  <.0001
+ Human       0.834 0.00539 157 154.569  <.0001
+ Surrogate   0.831 0.00552 157 150.430  <.0001
+
+TACondition = TACondition_5:
+ Agent_Type emmean      SE  df t.ratio p.value
+ Artificial  0.807 0.00539 157 149.541  <.0001
+ Human       0.740 0.00539 157 137.191  <.0001
+ Surrogate   0.740 0.00552 157 134.042  <.0001
+
+Degrees-of-freedom method: kenward-roger 

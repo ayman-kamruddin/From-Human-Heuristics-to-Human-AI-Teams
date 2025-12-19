@@ -4,10 +4,16 @@
 import os # for directories
 from pathlib import Path # path functions
 import pandas as pd
-from tools.utils import get_chaser_v2, get_num_targets
 import numpy as np
 import sys
 from tqdm import trange
+
+# Add parent Scripts directory to path for importing tools module
+script_dir = os.path.dirname(os.path.abspath(__file__))
+scripts_dir = os.path.dirname(script_dir)
+sys.path.insert(0, scripts_dir)
+
+from tools.utils import get_chaser_v2, get_num_targets
 
 num_HAs = 2
 max_TAs = 5
@@ -101,7 +107,7 @@ def collapse_actual_dynamic_engagement(actual_dynamic_policy, trialData):
         if [row['hA0TA0'], row['hA0TA1'], row['hA0TA2'], row['hA0TA3'], row['hA0TA4']].count(1) > 1:
             #print("More than one TA is engaged with HA1")
             closest_TA = get_closest_HA_TA_pair(trialData, idx, player = 'hA0')
-            actual_dynamic_policy.at[idx, 'hA0_engagement'] = closest_TA
+            collapsed_policy.at[idx, 'hA0_engagement'] = closest_TA
         elif row['hA0TA0'] == 1:
             collapsed_policy.at[idx, 'hA0_engagement'] = 0
         elif row['hA0TA1'] == 1:
@@ -116,7 +122,7 @@ def collapse_actual_dynamic_engagement(actual_dynamic_policy, trialData):
     return collapsed_policy
 
 cwd = os.path.dirname(__file__) # current working directory
-wd = Path(cwd).parents[0] # project working directory
+wd = Path(cwd).parents[1] # project working directory
 
 
 numHerders = 2
@@ -128,43 +134,44 @@ numTargetArray = [3,4,5] # array of the possible number of targets in the experi
 
 
 columns = ["time","TrialID", "numTargs","p0TA0", "p0TA1", "p0TA2", "p0TA3", "p0TA4","hA0TA0", "hA0TA1", "hA0TA2", "hA0TA3", "hA0TA4"]
-output_path = os.path.join(wd,"OtherResults\Actual_Dynamic_Policies_HumanAA")
+output_path = os.path.join(wd, "OtherResults", "Actual_Dynamic_Policies_HumanAA")
 
 
 if not os.path.exists(output_path):
     os.mkdir(output_path)
 
-AA_types = ["\Heuristic", "\Human-Sensitive", "\SelfPlay"]
+AA_types = ["Heuristic"]  # Only Heuristic agent type used in this study
 # create subpaths for each AA_type
 for AA_type in AA_types:
-    if not os.path.exists(output_path+AA_type):
-        os.mkdir(output_path+AA_type)
+    if not os.path.exists(os.path.join(output_path, AA_type)):
+        os.mkdir(os.path.join(output_path, AA_type))
         # create subpaths for each player
-    for subFolder in ["\HumanPlayer0", "\HumanPlayer1"]:        
-        if not os.path.exists(output_path+AA_type+subFolder):
-            os.mkdir(output_path+AA_type+subFolder)
+    for subFolder in ["HumanPlayer0", "HumanPlayer1"]:
+        if not os.path.exists(os.path.join(output_path, AA_type, subFolder)):
+            os.mkdir(os.path.join(output_path, AA_type, subFolder))
 
 #access all sessions in Human-AA where you go over both player 0 and player 1
 
 
 for trial in trange(firstTrial, lastTrial): #loop over all relevant trials
     trial_ID = "{:02}".format(trial)
-    for subFolder in ["\HumanPlayer0", "\HumanPlayer1"]: #make sure you treat all trials, where the human is player 0 and player 1 both
+    for subFolder in ["HumanPlayer0", "HumanPlayer1"]: #make sure you treat all trials, where the human is player 0 and player 1 both
         for AA_type in AA_types: #loop over all the different AAs
-            expDir = os.path.join(wd,'RAW_EXPERIMENT_DATA\HUMAN-AA_TEAM'+AA_type)
-            expFiles = [path for path in Path(expDir+subFolder).rglob('*trialIdentifier'+trial_ID+'*')]
+            expDir = os.path.join(wd, 'RAW_EXPERIMENT_DATA', 'HUMAN-AA_TEAM', AA_type)
+            expFiles = [path for path in Path(os.path.join(expDir, subFolder)).rglob('*trialIdentifier'+trial_ID+'*')]
             for expFile in expFiles:
                 trialData = pd.read_csv(expFile)
                 dynamicPolicyTimeSeries = get_actual_Dynamic_Policy_as_csv(trial, trialData) #0 and 1 encoded HA-TA engagement
 
-                output_filename = "\\trialIdentifier_"+str(trial) + ".csv" #one file per trial
+                output_filename = "trialIdentifier_"+str(trial) + ".csv" #one file per trial
                 session_name = Path(expFile).parent.parent.name
 
                 #make a folder for each session
-                if not os.path.exists(output_path+AA_type+subFolder+'\\'+session_name):
-                    os.mkdir(output_path+AA_type+subFolder+'\\'+session_name)
+                session_folder = os.path.join(output_path, AA_type, subFolder, session_name)
+                if not os.path.exists(session_folder):
+                    os.mkdir(session_folder)
 
 
                 collapsedDynamicPolicyTimeSeries = collapse_actual_dynamic_engagement(dynamicPolicyTimeSeries, trialData)
 
-                collapsedDynamicPolicyTimeSeries.to_csv(output_path+AA_type+subFolder+'\\'+session_name+output_filename, index=False)
+                collapsedDynamicPolicyTimeSeries.to_csv(os.path.join(session_folder, output_filename), index=False)

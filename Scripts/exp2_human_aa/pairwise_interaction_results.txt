@@ -1,0 +1,40 @@
+TACondition = TACondition_3:
+ contrast                estimate      SE  df t.ratio p.value
+ Artificial - Human      4.13e-02 0.00674 146   6.121  <.0001
+ Artificial - Surrogate  4.50e-02 0.00772 157   5.835  <.0001
+ Human - Surrogate       3.76e-03 0.00772 157   0.488  0.8773
+
+TACondition = TACondition_4:
+ contrast                estimate      SE  df t.ratio p.value
+ Artificial - Human      3.79e-02 0.00674 146   5.616  <.0001
+ Artificial - Surrogate  4.11e-02 0.00772 157   5.325  <.0001
+ Human - Surrogate       3.23e-03 0.00772 157   0.418  0.9081
+
+TACondition = TACondition_5:
+ contrast                estimate      SE  df t.ratio p.value
+ Artificial - Human      6.66e-02 0.00674 146   9.879  <.0001
+ Artificial - Surrogate  6.66e-02 0.00772 157   8.627  <.0001
+ Human - Surrogate      -2.98e-05 0.00772 157  -0.004  1.0000
+
+Degrees-of-freedom method: kenward-roger 
+P value adjustment: tukey method for comparing a family of 3 estimates 
+TACondition = TACondition_3:
+ contrast                estimate      SE  df t.ratio p.value
+ Artificial - Human      4.13e-02 0.00674 146   6.121  <.0001
+ Artificial - Surrogate  4.50e-02 0.00772 157   5.835  <.0001
+ Human - Surrogate       3.76e-03 0.00772 157   0.488  0.8773
+
+TACondition = TACondition_4:
+ contrast                estimate      SE  df t.ratio p.value
+ Artificial - Human      3.79e-02 0.00674 146   5.616  <.0001
+ Artificial - Surrogate  4.11e-02 0.00772 157   5.325  <.0001
+ Human - Surrogate       3.23e-03 0.00772 157   0.418  0.9081
+
+TACondition = TACondition_5:
+ contrast                estimate      SE  df t.ratio p.value
+ Artificial - Human      6.66e-02 0.00674 146   9.879  <.0001
+ Artificial - Surrogate  6.66e-02 0.00772 157   8.627  <.0001
+ Human - Surrogate      -2.98e-05 0.00772 157  -0.004  1.0000
+
+Degrees-of-freedom method: kenward-roger 
+P value adjustment: tukey method for comparing a family of 3 estimates 
